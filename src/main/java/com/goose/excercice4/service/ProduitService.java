@@ -43,6 +43,7 @@ public class ProduitService {
     public Produit creer(Produit produit) {
         // On s'assure que l'ID est null pour forcer une création (pas une mise jour)
         produit.setId(null);
+        this.notificationService.notifier("stock", "Nouveau produit : " + produit.getNom());
         return produitRepository.save(produit);
     }
     /**
