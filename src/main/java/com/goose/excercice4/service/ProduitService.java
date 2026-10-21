@@ -2,6 +2,7 @@ package com.goose.excercice4.service;
 
 import com.goose.excercice4.model.Produit;
 import com.goose.excercice4.repository.ProduitRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class ProduitService {
      * Injection de dépendance par constructeur.
      * Spring injecte automatiquement le ProduitRepository.
      */
-    public ProduitService(ProduitRepository produitRepository, NotificationService notificationService) {
+    public ProduitService(ProduitRepository produitRepository,@Qualifier("consoleNotificationService") NotificationService notificationService) {
         this.produitRepository = produitRepository;
         this.notificationService = notificationService;
     }

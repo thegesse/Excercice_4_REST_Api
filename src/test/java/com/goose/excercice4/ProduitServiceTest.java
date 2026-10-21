@@ -2,6 +2,7 @@ package com.goose.excercice4;
 
 import com.goose.excercice4.model.Produit;
 import com.goose.excercice4.repository.ProduitRepository;
+import com.goose.excercice4.service.NotificationService;
 import com.goose.excercice4.service.ProduitService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,10 @@ class ProduitServiceTest {
     private ProduitRepository produitRepository;
     @InjectMocks // vrai service, construit avec le mock
     private ProduitService produitService;
+
+    @InjectMocks
+    private NotificationService notificationService;
+
     @Test
     void recupererParId_retourneLeProduit_quandIlExiste() {
         Produit produit = new Produit();
@@ -33,5 +38,11 @@ class ProduitServiceTest {
         boolean resultat = produitService.supprimer(99L);
         assertThat(resultat).isFalse();
         verify(produitRepository, never()).deleteById(any());
+    }
+    @Test
+    void creer_DoitMettreIdANullAvantSauvegarde() {
+        Produit produit = new Produit();
+        produit.setId(1L);
+        produit.setNom("Clavier");
     }
 }
