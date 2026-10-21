@@ -13,12 +13,14 @@ import java.util.Optional;
 @Service
 public class ProduitService {
     private final ProduitRepository produitRepository;
+    private final NotificationService notificationService;
     /**
      * Injection de dépendance par constructeur.
      * Spring injecte automatiquement le ProduitRepository.
      */
-    public ProduitService(ProduitRepository produitRepository) {
+    public ProduitService(ProduitRepository produitRepository, NotificationService notificationService) {
         this.produitRepository = produitRepository;
+        this.notificationService = notificationService;
     }
     /**
      * Retourne tous les produits.
