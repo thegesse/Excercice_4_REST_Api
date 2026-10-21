@@ -6,6 +6,7 @@ import com.goose.excercice4.service.NotificationService;
 import com.goose.excercice4.service.ProduitService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,7 +20,7 @@ class ProduitServiceTest {
     @InjectMocks // vrai service, construit avec le mock
     private ProduitService produitService;
 
-    @InjectMocks
+    @Mock
     private NotificationService notificationService;
 
     @Test
@@ -44,5 +45,24 @@ class ProduitServiceTest {
         Produit produit = new Produit();
         produit.setId(1L);
         produit.setNom("Clavier");
+        produitService.creer(produit);
+        ArgumentCaptor<Produit> argumentCaptor = ArgumentCaptor.forClass(Produit.class);
+        verify(produitRepository).save(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().getId()).isNull();
     }
+
+    @Test
+    void creer_DoitNotifierUneSeuleFois() {
+        Produit produit = new Produit();
+        produit.setId(1L);
+        produit.setNom("Clavier");
+        produitService.creer(produit);
+
+        verify(notificationService, times(1)).notifier("stock", "Nouveau produit : Clavier");
+        //times(1) == verifie nombre de fois la methode a ete appeler
+        //Ici verifie que la method a bien ete appeller 1 seul fois
+    }
+
+
+
 }
